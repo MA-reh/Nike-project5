@@ -184,6 +184,9 @@ nav.navbar .navbar-collapse .icons li i:hover {
     background-image: url("../images/home-bg-4.png");
 }
 
+#Home .MA-carousel-item:nth-of-type(5) {
+    background-image: url("../images/home-bg-5.png");
+}
 
 #Home .MA-carousel-item .container {
     height: 100%;
@@ -293,12 +296,9 @@ nav.navbar .navbar-collapse .icons li i:hover {
     transform: scale(1.1);
 }
 
-
 #offers .offer .item:hover img {
     transform: scale(1.0);
 }
-
-
 
 /* Latest */
 #Latest .container .products .product>.row .part1 .item>.row .part1 {
@@ -348,6 +348,23 @@ nav.navbar .navbar-collapse .icons li i:hover {
 
 #Latest .container .products .product>.row .part2 .item p {
     color: #777777;
+}
+
+.price strong {
+    width: max-content ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+}
+
+.price strong span{
+    width: max-content;
+}
+
+.price ul li {
+    font-size: 15px;
+    width: max-content;
 }
 
 .sizes ul li {
@@ -486,20 +503,3 @@ nav.navbar .navbar-collapse .icons li i:hover {
     justify-content: center;
     align-items: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.yugdada {}

@@ -5,7 +5,16 @@ let html = document.querySelector("html"),
   navBarEle = document.querySelector(".navbar"),
   hightOfNavBar = navBarEle.clientHeight,
   correctImages = document.querySelectorAll(".correctImg"),
-  popupEle = document.querySelector(".popup");
+  popupEle = document.querySelector(".popup"),
+  cartProducts = [];
+
+if (localStorage.getItem("cartProducts") != null) {
+  cartProducts = JSON.parse(localStorage.getItem("cartProducts"));
+  checkCartShop()
+} else {
+  updateLocalStorage();
+  checkCartShop()
+}
 
 window.addEventListener("DOMContentLoaded", function () {
   let currentSlider = document.querySelector(
@@ -73,10 +82,14 @@ navLinks.forEach(function (navLink) {
 });
 
 latest.forEach(function (product, index) {
+  let isProductInToCart = cartProducts.filter((item) => {return item.id == product.id;})[0];
 
+  productsDiv.innerHTML += ` 
+          <div class="product ${index != product.length - 1 ? "mb-3" : ""}"
 
-  productsDiv.innerHTML += `   
-          <div class="product ${index != product.length - 1 ? "mb-3" : ""}" >
+          data-product-id="${product.id }" 
+          data-selected-sizes="${(isProductInToCart == undefined)? product.sizes[0]: isProductInToCart.size}"  
+          data-selected-colors="${(isProductInToCart == undefined)? product.colors[0]: isProductInToCart.color}" >
             <div
               class="row w-100 mx-auto mx-lg-0 bg-light py-3 px-2 rounded-3 main-border"
             >
@@ -114,14 +127,15 @@ latest.forEach(function (product, index) {
                   <div class="sizes mt-2 d-flex">
                     <strong class="me-3">Size :</strong>
                     <ul type="none" class=" d-flex p-0 m-0">
-                      ${createSizesOfProduct(product)}
+                      ${createSizesOfProduct(product.sizes , isProductInToCart)}
                     </ul>
                   </div>
 
-
-                  <button class="btn main-border main-color mt-3">
-                    Add To Cart
-                  </button>
+                  ${(isProductInToCart == undefined)? 
+                    `<button  data-type-btn="add" onclick="addToCart(this,${product.id})" class="btnAdd btn main-border main-color mt-3">Add To Cart </button>` 
+                    :  
+                    `<button  data-type-btn="remove" onclick="addToCart(this,${product.id})" class="btnAdd btn remove main-border main-color mt-3">Remove From Cart </button>`
+                    } 
                 </div>
               </div>
             </div>
@@ -145,8 +159,8 @@ features.forEach(function (product) {
   }
 
   productsFeatured.innerHTML += `
-        <div class="ProductDiv col-sm-6 col-lg-3 mb-3">
-          <div class=" product item bg-light rounded-3 py-4 px-3">
+        <div class="ProductDiv col-sm-6 col-lg-3 mb-3" >
+          <div class=" product item bg-light rounded-3 py-4 px-3" >
             <p class="${product.discount == 0 ? "d-none" : "d-block"}">-${
     product.discount * 100
   }%
@@ -159,7 +173,9 @@ features.forEach(function (product) {
             />
             </div>
             <div class="search">
-              <i class="fas fa-search key" onclick="openPopup('product' , ${product.id})"></i>
+              <i class="fas fa-search key" onclick="openPopup('product' , ${
+                product.id
+              })"></i>
             </div>        
             <ul class="indicators d-flex p-0" type="none">
               ${liActivesImages}
